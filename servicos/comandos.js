@@ -33,7 +33,7 @@ async function apresentarElementoAno(ano) {
 
 async function apresentarElementoCampeao(time) {
     const conexao = await pool.getConnection()
-    const query = `SELECT id, campeao, vice, ano FROM campeonatos WHERE campeao = "${time}"`
+    const query = "SELECT id, campeao, vice, ano FROM campeonatos WHERE campeao Like '%" + time + "%'"
     let resposta = executarQuery(conexao, query)
     conexao.release()
     return resposta
