@@ -2,6 +2,7 @@ import express from 'express';
 import { apresentartudo, apresentarElementoId, apresentarElementoAno, apresentarElementoCampeao } from './servicos/comandosMostrar.js';
 import { cadastarCampeonatos } from "./servicos/comandosCadastrarCampeonatos.js"
 import { atualizarCampeonato, atualizarCampeonatoParcial } from "./servicos/comandosAtualizarCampeonatos.js"
+import { deletarCampeonato } from './servicos/comandosDeletarCampeonatos.js'
 import pool from './servicos/conexao.js';
 import cors from "cors"
 const app = express();
@@ -9,6 +10,17 @@ const app = express();
 app.use(cors())
 
 app.use(express.json())
+
+app.delete('/campeonatos/:id', async (req, res) => {
+    const {id} = req.params
+    const resultado = await deletarCampeonato(id)
+
+    if (resultado.affectedRows > 0) {
+        res.status(202).send("Registro deletado com sucesso.")
+    } else {
+        res.status(404).send('Registro não encontrado, seu burro.')
+    }
+})
 
 app.patch('/campeonatos/:id', async(req, res) => {
     const {id} = req.params;
